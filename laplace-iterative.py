@@ -7,13 +7,14 @@ import matplotlib.pyplot as plt
 
 # --- Constants --- #
 
-steps = 500                 # number of iterations
-a = 10                      # size in x
-b = 15                      # size in y
-delta = 1                   # fineness
+steps = 300                 # number of iterations
+a = 1.0                      # size in x
+b = 1.5                      # size in y
+delta = 0.01                   # fineness
 
-x, y = np.meshgrid(np.arange(0, a), np.arange(0, b))        # grid
-solution = np.empty((b, a))                                 # holds solution
+x, y = np.meshgrid(np.arange(0, a, delta), np.arange(0, b, delta))        # grid
+solution = np.empty((int(b/delta), int(a/delta)))                                 # holds solution
+print solution.shape
 
 # --- Boundary conditions --- #
 
@@ -23,6 +24,7 @@ solution = np.empty((b, a))                                 # holds solution
 # phiay = 10
 # phi0y = 0
 
+# sina = np.sin(a)
 phixb = np.sin(x[-1:, :])/np.sin(a)
 phix0 = 0
 phiay = np.sinh(y[:, -1:])/np.sinh(b)
@@ -36,15 +38,9 @@ solution[:, :1]  = phi0y
 # --- Calculation --- #
 
 for iteration in range(0, steps):
-    for i in range(1, b-1, delta):
-        for j in range(1, a-1, delta):
+    for i in range(1, int(b/delta)-1):
+        for j in range(1, int(a/delta)-1):
             solution[i, j] = 0.25 * (solution[i+1][j] + solution[i-1][j] + solution[i][j+1] + solution[i][j-1])
-
-# --- Analytical --- #
-
-
-
-
 
 # --- Plot --- #
 
